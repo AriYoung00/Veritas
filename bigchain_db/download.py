@@ -8,4 +8,6 @@ bdb = BigchainDB(bdb_root_url)
 def get_articles(search_term):
     user = generate_keypair()
     return bdb.assets.get(search=search_term)
-print (get_articles('example'))
+    
+if __name__ == "__main__":
+    print (get_articles('example'))
