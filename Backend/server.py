@@ -1,5 +1,3 @@
-import json
-
 import flask
 from flask import Flask
 from flask import request
@@ -13,7 +11,6 @@ app = Flask(__name__)
 def get_topics():
     date = request.args.get('date')
     articles = download.get_articles(date)
-    print(date)
 
     topics = []
     for article in articles:
