@@ -19,8 +19,10 @@ def update_db():
     global LAST_QUERY_DATE, KEEP_CATEGORIES, TABOOLA_URL
     req = requests.get(TABOOLA_URL).json()['buckets']
 
+    print(len(req))
     for temp in req:
         highest_traffic_rollups = [None, None, None]
+        highest_traffic_rollup_categories = ["", "", ""]
         report = temp['report']
         report_time = datetime.datetime.strptime(temp['date'], "%Y-%m-%dT%H:%M:%SZ")
         if LAST_QUERY_DATE > report_time:
@@ -28,16 +30,26 @@ def update_db():
 
         for rollup in report['rollups']:
             if rollup['category'] not in KEEP_CATEGORIES:
+                print('boob', rollup['category'])
                 continue
+            print("not boob", rollup['category'])
             for i in range(len(highest_traffic_rollups)):
+                if rollup['name'] in highest_traffic_rollup_categories:
+                    break
+                print(rollup['name'], rollup['traffic']['totalTraffic'])
                 if highest_traffic_rollups[i] is None or \
                    highest_traffic_rollups[i]['traffic']['totalTraffic'] < rollup['traffic']['totalTraffic']:
+                    highest_traffic_rollup_categories[i] = rollup['name']
                     highest_traffic_rollups[i] = rollup
 
         for rollup in highest_traffic_rollups:
+            print(rollup['name'])
             for article in rollup['top_articles_on_network']:
                 url = list(article.keys())[0]
-                info = get_text_from_url(url)
+                try:
+                    info = get_text_from_url(url)
+                except:
+                    continue
                 score = neural_network(info['title'], info['text'])
                 text_hash = hashlib.sha1(info['text'].encode()).hexdigest()
 
