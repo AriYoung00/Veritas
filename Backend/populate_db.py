@@ -17,7 +17,9 @@ LAST_QUERY_DATE = datetime.datetime.min
 
 
 def neural_network(title, body):
-    return predictionOnArticles(title, body)
+    ret = predictionOnArticles(title, body)
+    print(ret)
+    return ret
 
 
 def update_db():

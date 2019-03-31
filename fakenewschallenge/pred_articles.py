@@ -1,4 +1,4 @@
-# from pred import pred
+from pred import pred
 import numpy as np
 from pred import pred
 file_test_instances = "test_stances_unlabeled.csv"
@@ -48,7 +48,7 @@ def predictionOnArticles(headlines, bodyTexts):
             if(cur_val != 3):
                 tmp_ct += 1
             tmp_sum += label_scores[cur_val]
-        print(tmp_ct, tmp_sum)
+#        print(tmp_ct, tmp_sum)
         if(tmp_ct == 0):
             raw_scores = np.append(raw_scores, 0)
         else:
