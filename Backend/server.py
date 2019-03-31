@@ -8,7 +8,7 @@ from bigchain_db import download
 app = Flask(__name__)
 
 
-@app.route("/api/getTopics", methods=["POST"])
+@app.route('/api/getTopics', methods=['POST'])
 def get_topics():
     date = request.args.get('date')
     articles = download.get_articles(date)
@@ -16,23 +16,24 @@ def get_topics():
 
     topics = []
     for article in articles:
-        if article["data"]["article"]["topic"] not in topics:
-            topics.append(article["data"]["article"]["topic"])
+        if article['data']['article']['topic'] not in topics:
+            topics.append(article['data']['article']['topic'])
 
     return json.dumps({'topics': topics})
 
 
-@app.route("/api/getArticles", methods=["POST"])
+@app.route('/api/getArticles', methods=['POST'])
 def get_articles():
-    date = request.args.get("date")
-    topic = request.args.get("topic")
+    date = request.args.get('date')
+    topic = request.args.get('topic')
 
     articles = download.get_articles(date)
     final_articles = []
     for article in articles:
-        if article["data"]['article']["topic"] == topic:
+        print(article['data']['article']['date'])
+        if article['data']['article']['topic'] == topic and article['data']['article']['date'] == date:
             final_articles.append({
-                'title': article['data']['article']['title'],
+                'title': article['data']['article']['headline'],
                 'url'  : article['data']['article']['news_url'],
                 'score': article['data']['article']['score']
             })

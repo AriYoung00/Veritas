@@ -18,8 +18,8 @@ def neural_network(title, body):
 def update_db():
     global LAST_QUERY_DATE, KEEP_CATEGORIES, TABOOLA_URL
     req = requests.get(TABOOLA_URL).json()['buckets']
+    new_report_time = None
 
-    print(len(req))
     for temp in req:
         highest_traffic_rollups = [None, None, None]
         highest_traffic_rollup_categories = ["", "", ""]
@@ -28,34 +28,51 @@ def update_db():
         if LAST_QUERY_DATE > report_time:
             continue
 
+        print("Beginning thing")
         for rollup in report['rollups']:
             if rollup['category'] not in KEEP_CATEGORIES:
-                print('boob', rollup['category'])
                 continue
-            print("not boob", rollup['category'])
             for i in range(len(highest_traffic_rollups)):
                 if rollup['name'] in highest_traffic_rollup_categories:
                     break
-                print(rollup['name'], rollup['traffic']['totalTraffic'])
                 if highest_traffic_rollups[i] is None or \
                    highest_traffic_rollups[i]['traffic']['totalTraffic'] < rollup['traffic']['totalTraffic']:
                     highest_traffic_rollup_categories[i] = rollup['name']
                     highest_traffic_rollups[i] = rollup
 
+        print("Finished filtering rollupss")
         for rollup in highest_traffic_rollups:
-            print(rollup['name'])
+            batch_headlines = []
+            batch_bodies = []
+            batch_urls = []
+            batch_names = []
+            index = 1
             for article in rollup['top_articles_on_network']:
                 url = list(article.keys())[0]
                 try:
                     info = get_text_from_url(url)
                 except:
                     continue
-                score = neural_network(info['title'], info['text'])
-                text_hash = hashlib.sha1(info['text'].encode()).hexdigest()
 
-                bigchain.upload_article(text_hash, rollup['name'], info['title'], url, report_time, score);
+                batch_headlines.append(info['title'])
+                batch_bodies.append(info['text'])
+                batch_urls.append(url)
+                batch_names.append(rollup['name'])
 
-        LAST_QUERY_DATE = report_time
+                print("Finished article", index)
+                index += 1
+
+            print(batch_headlines)
+            print(batch_bodies)
+            scores = neural_network(batch_headlines, batch_bodies)
+            for i in range(len(scores)):
+                text_hash = hashlib.sha1(batch_bodies[i].encode()).hexdigest()
+                bigchain.upload_article(text_hash, batch_names[i], batch_headlines[i], batch_urls[i], report_time, scores[i])
+
+                if new_report_time is None:
+                    new_report_time = report_time
+
+    LAST_QUERY_DATE = new_report_time
 
 
 if __name__ == '__main__':
