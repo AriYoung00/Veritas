@@ -20,7 +20,7 @@ LAST_QUERY_DATE = datetime.datetime.min
 
 def neural_network(title, body):
     os.rmdir("model")
-    shutil.copytree('../fakenewschallenge/model', './')
+    shutil.copytree('../fakenewschallenge/model', './model')
 
     ret = predictionOnArticles(title, body)
     print(ret)
