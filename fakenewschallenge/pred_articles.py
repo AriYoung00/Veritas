@@ -1,5 +1,6 @@
 # from pred import pred
 import numpy as np
+from pred import pred
 file_test_instances = "test_stances_unlabeled.csv"
 file_test_bodies = "test_bodies.csv"
 
@@ -52,11 +53,14 @@ def predictionOnArticles(headlines, bodyTexts):
             raw_scores = np.append(raw_scores, 0)
         else:
             raw_scores = np.append(raw_scores, tmp_sum/tmp_ct)
-                
+    if(max(raw_scores) - min(raw_scores) == 0):
+        return raw_scores
     norm_scores = (raw_scores-min(raw_scores))/(max(raw_scores)-min(raw_scores)) * 10  
     return norm_scores
 
 if __name__ == "__main__":
-    arr1 = ['a', 'b', 'c', 'd', 'e']
-    arr2 = ['1', '2', '3', '4', '5']
+    # arr1 = ['a', 'b', 'c', 'd', 'e']
+    # arr2 = ['1', '2', '3', '4', '5']
+    arr1 = ['What First Responders Don’t Know About Fiery Electric Vehicles',]
+    arr2 = ['After an out-of-control Tesla Model S plowed into a stand of palm trees on a highway median outside Fort Lauderdale last month, police rushed to put out the ensuing blaze using a department-issued fire extinguisher. It was a wasted effort. The car kept on burning after the crash, which killed the driver.The police may not have known lithium-ion batteries inside electric vehicles, once ignited, can’t be put out with chemicals from a conventional extinguisher. The battery fires are susceptible to a self-destructive chain reaction known as thermal runaway, causing a feedback loop of rising temperatures. The Tesla fire stumped a series of first responders in Florida. Firefighters eventually doused the flames with water, which seemed to work, but the wrecked car reignited twice more after being towed away. That prompted what a police report later termed “extraordinary measures,” including a call to Broward County’s hazmat unit for advice on stamping out the fire once and for all.',]
     print(predictionOnArticles(arr1, arr2))

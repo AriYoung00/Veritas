@@ -86,13 +86,21 @@ def pred():
 
     # Load model
     if mode == 'load':
-        with tf.Session() as sess:
+        with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
+            # Creates a graph.
+            a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name='a')
+            b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name='b')
+            c = tf.matmul(a, b)
+            # Creates a session with log_device_placement set to True.
+            # Runs the op.
+            print(sess.run(c))
             load_model(sess)
 
 
             # Predict
             test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
             test_pred = sess.run(predict, feed_dict=test_feed_dict)
+
 
     return test_pred
     # return save_predictions(test_pred, file_predictions)
