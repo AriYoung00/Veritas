@@ -1,4 +1,4 @@
-import apscheduler
+import time
 import requests
 import datetime
 import hashlib
@@ -83,4 +83,6 @@ def update_db():
 
 
 if __name__ == '__main__':
-    update_db()
+    while True:
+        update_db()
+        time.sleep(60 * 30)
