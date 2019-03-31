@@ -22,10 +22,13 @@ class TopicView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            topic: props.topic,
-            date: props.date,
+            topic: props.location.state.topic,
+            date: this.props.location.state.date,
             articles_data: [],
         };
+
+        console.log(this.state.date)
+        console.log(this.state.topic)
 
         this.getArticles = this.getArticles.bind(this)
 

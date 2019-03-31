@@ -41,8 +41,8 @@ class TimeLineItem extends React.Component {
 			      	borderRadius: '8px',
 			    }}
 			>
-				{this.state.topics.map((topic, index) => (
-					<Topic value={topic} />
+				{this.state.topics.map((topic) => (
+					<Topic date={this.state.date} topic={topic} />
 				))}
 			</TimelineItem>
 		);

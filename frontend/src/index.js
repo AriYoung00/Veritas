@@ -11,7 +11,7 @@ const routing = (
   <Router>
     <div>
       <Route exact path="/" component={App} />
-      <Route path="/topicView" render={(props) => <TopicView />} />
+      <Route path="/topicView" component={TopicView} />
     </div>
   </Router>
 )
