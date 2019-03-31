@@ -99,7 +99,7 @@ class TopicView extends Component {
                         <StyledLink href={url}>{title}</StyledLink>
                     </div>
                     <div style={{ float: 'right', width: '10%'}}>
-                        <Score>{score}</Score>
+                        <Score style={{ color: this.renderScoreColor(score) }}>{score}</Score>
                     </div>
                 </div>
             );

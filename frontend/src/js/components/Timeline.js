@@ -20,7 +20,6 @@ class TimeLine extends React.Component {
 			let hour = date.getHours() < 10? '0' + date.getHours() : date.getHours();
 			this.state.dates.push(`${date.getFullYear()}-${month}-${day}T${hour}:${minutes}:00Z`);
 		}
-		console.log(this.state.dates)
 	}
 
 	render() {
