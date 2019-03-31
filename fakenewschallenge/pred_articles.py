@@ -1,13 +1,38 @@
 # from pred import pred
 import numpy as np
-file_train_instances = "train_stances.csv"
-file_train_bodies = "train_bodies.csv"
-file_predictions = 'predictions_test.csv'
+file_test_instances = "test_stances_unlabeled.csv"
+file_test_bodies = "test_bodies.csv"
 
 label_ref_rev = {0: 'agree', 1: 'disagree', 2: 'discuss', 3: 'unrelated'}
 label_scores = [1, -1, 0.5, 0]
+# -*- coding: utf-8 -*-
+
+def writeCSV(headlines, bodyTexts):
+	import csv
+
+	headSize = len(headlines)
+	bodySize = len(bodyTexts)
+
+	if headSize != bodySize:
+		print('headlines and body texts are unequal')
+		return 1
+
+	with open(file_test_instances, mode= 'w') as stances:
+		stance_writer = csv.writer(stances, delimiter= ',')
+		stance_writer.writerow(['Headline', 'Body ID'])
+		for i in range(headSize):
+			for j in range(bodySize):
+				stance_writer.writerow([headlines[i], str(j)])
+
+	with open(file_test_bodies, mode= 'w') as bodies:
+		bodies_writer = csv.writer(bodies, delimiter= ',')
+		bodies_writer.writerow(['Body ID', 'articleBody'])
+		for i in range(bodySize):
+			bodies_writer.writerow([str(i), bodyTexts[i]])
+	return 0
+
 def predictionOnArticles(headlines, bodyTexts):
-    generateCSVs(headlines, bodyTexts)
+    writeCSV(headlines, bodyTexts)
     test_pred = pred()
 
     test_pred = np.reshape(test_pred, (-1, len(headlines)))
@@ -32,4 +57,6 @@ def predictionOnArticles(headlines, bodyTexts):
     return norm_scores
 
 if __name__ == "__main__":
-    predictionOnArticles([], [])
+    arr1 = ['a', 'b', 'c', 'd', 'e']
+    arr2 = ['1', '2', '3', '4', '5']
+    print(predictionOnArticles(arr1, arr2))
