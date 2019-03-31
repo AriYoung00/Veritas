@@ -90,12 +90,10 @@ def pred():
     # Load model
     if mode == 'load':
         with tf.Session(config=config)) as sess:
-            with tf.device('/gpu:0'):
-                load_model(sess)
-                # Predict
-                test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
-                test_pred = sess.run(predict, feed_dict=test_feed_dict)
-
+            load_model(sess)
+            # Predict
+            test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
+            test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
     return test_pred
     # return save_predictions(test_pred, file_predictions)
