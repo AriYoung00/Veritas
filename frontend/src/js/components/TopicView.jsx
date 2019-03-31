@@ -27,18 +27,15 @@ class TopicView extends Component {
             articles_data: [],
         };
 
-        console.log(this.state.date)
-        console.log(this.state.topic)
-
         this.getArticles = this.getArticles.bind(this)
 
     }
     componentDidMount() {
-        let fake_articles = this.getFakeArticles().articles;
-        this.setState({
-            articles_data: fake_articles,
-        });
-        // this.getArticles()
+        // let fake_articles = this.getFakeArticles().articles;
+        // this.setState({
+        //     articles_data: fake_articles,
+        // });
+        this.getArticles()
     }
     async getArticles() {
         axios.post(API_ENDPOINT_ARTICLES, {
@@ -51,6 +48,7 @@ class TopicView extends Component {
             this.setState({
                 articles_data: data.articles
             })
+            console.log(this.state.articles_data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -76,6 +74,14 @@ class TopicView extends Component {
             }
         )
     }
+
+    renderScoreColor(score) {
+        if (score > 5)
+            return '#1ebf44'
+        else 
+            return '#c12f1f'
+    }
+
     render() {
         console.log('articles_data', this.state.articles_data)
         if (this.state.articles_data.length == 0) {
@@ -86,7 +92,7 @@ class TopicView extends Component {
 
         let articles_display = this.state.articles_data.map(({ title, url, score }) => {
             return (
-                <div style={{width: '1500px'}}>
+                <div style={{width: '1500px', 'padding-left': '15em'}}>
                     <div style={{ display: 'inline-block', width: '90%'}}>
                         <StyledLink href={url}>{title}</StyledLink>
                     </div>

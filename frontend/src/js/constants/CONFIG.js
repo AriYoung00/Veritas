@@ -1,3 +1,3 @@
-let API_ENDPOINT_ARTICLES = './getArticles'
-let API_ENDPOINT_TOPICS = './getTopics'
+let API_ENDPOINT_ARTICLES = '35.227.156.61:5000/api/getArticles'
+let API_ENDPOINT_TOPICS = '35.227.156.61:5000/api/getTopics'
 

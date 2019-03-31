@@ -10,24 +10,29 @@ class TimeLineItem extends React.Component {
 		super(props)
 		this.state = {
 			date: this.props.value,
-			topics: ['aadkfjakdjfkadj', 'b', 'c'],
+			topics: [],
 		}
 	}
 
-	// async getTopics() {
-	// 	axios.post(API_ENDPOINT_TOPICS), {
-	// 		date: this.state.date,
-	// 	}.then(function (response) {
- //            console.log(response);
- //            return response.data;
- //        }).then((data) => {
- //            this.setState({
- //                topics: data.topics,
- //            })
- //        }).catch(function (error) {
- //            console.log(error);
- //        });
-	// }
+	componentDidMount() {
+		this.getTopics();
+	}
+
+	async getTopics() {
+		axios.post(API_ENDPOINT_TOPICS, {
+			date: this.state.date,
+		}).then(function (response) {
+            console.log(response);
+            return response.data;
+        }).then((data) => {
+            this.setState({
+                topics: data.topics,
+            })
+            console.log(this.state.topics);
+        }).catch(function (error) {
+            console.log(error);
+        });
+	}
 	
 	render() {
 		return (
