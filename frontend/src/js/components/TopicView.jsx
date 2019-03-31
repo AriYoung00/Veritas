@@ -23,10 +23,11 @@ class TopicView extends Component {
         super(props);
         this.state = {
             topic: props.location.state.topic,
-            date: this.props.location.state.date,
+            date: props.location.state.date,
             articles_data: [],
         };
-
+        console.log(this.state.topic)
+        console.log(this.state.date)
         this.getArticles = this.getArticles.bind(this)
 
     }
@@ -35,20 +36,21 @@ class TopicView extends Component {
         // this.setState({
         //     articles_data: fake_articles,
         // });
-        this.getArticles()
+         this.getArticles()
     }
     async getArticles() {
-        axios.post(API_ENDPOINT_ARTICLES, {
-            topic: this.state.topic,
-            date: this.state.date
+        axios.get(API_ENDPOINT_ARTICLES, {
+            params: {
+                topic: this.state.topic,
+                date: this.state.date
+            }
         }).then(function (response) {
-            console.log(response);
+            console.log(response)
             return response.data;
         }).then((data) => {
             this.setState({
-                articles_data: data.articles
+                articles_data: data
             })
-            console.log(this.state.articles_data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -84,7 +86,7 @@ class TopicView extends Component {
 
     render() {
         console.log('articles_data', this.state.articles_data)
-        if (this.state.articles_data.length == 0) {
+        if (this.state.articles_data == null) {
             return (
                 <div>Loading data ...</div>
             );

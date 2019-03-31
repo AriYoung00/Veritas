@@ -94,5 +94,5 @@ def pred():
             test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
             test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
-
-    return save_predictions(test_pred, file_predictions)
+    return test_pred
+    # return save_predictions(test_pred, file_predictions)

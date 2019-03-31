@@ -1,9 +1,10 @@
 import React from 'react';
-import { API_ENDPOINT_TOPICS } from './../constants/CONFIG';
+import { API_ENDPOINT_TOPICS, API_ENDPOINT } from './../constants/CONFIG';
 import { TimelineItem }  from 'vertical-timeline-component-for-react';
 import Topic from './Topic.js';
 
 const axios = require('axios');
+
 
 class TimeLineItem extends React.Component {
 	constructor(props){
@@ -19,8 +20,11 @@ class TimeLineItem extends React.Component {
 	}
 
 	async getTopics() {
-		axios.post(API_ENDPOINT_TOPICS, {
-			date: this.state.date,
+		axios.get(API_ENDPOINT_TOPICS, {
+			crossDomain: true,
+			params: {
+			  date: this.state.date
+			}
 		}).then(function (response) {
             console.log(response);
             return response.data;
