@@ -1,5 +1,6 @@
 import json
 
+import flask
 from flask import Flask
 from flask import request
 
@@ -8,7 +9,7 @@ from bigchain_db import download
 app = Flask(__name__)
 
 
-@app.route('/api/getTopics', methods=['POST'])
+@app.route('/api/getTopics', methods=['POST', 'GET'])
 def get_topics():
     date = request.args.get('date')
     articles = download.get_articles(date)
@@ -16,13 +17,16 @@ def get_topics():
 
     topics = []
     for article in articles:
-        if article['data']['article']['topic'] not in topics:
+        if article['data']['article']['topic'] not in topics and article['data']['article']['date'] == date:
             topics.append(article['data']['article']['topic'])
 
-    return json.dumps({'topics': topics})
+    resp = flask.jsonify({'topics': topics})
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+
+    return resp
 
 
-@app.route('/api/getArticles', methods=['POST'])
+@app.route('/api/getArticles', methods=['POST', 'GET'])
 def get_articles():
     date = request.args.get('date')
     topic = request.args.get('topic')
@@ -38,4 +42,7 @@ def get_articles():
                 'score': article['data']['article']['score']
             })
 
-    return json.dumps(final_articles)
+    resp = flask.jsonify(final_articles)
+    resp.headers.add('Access-Control-Allow-Origin', '*')
+
+    return resp
