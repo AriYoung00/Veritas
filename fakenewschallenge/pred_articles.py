@@ -1,6 +1,7 @@
 from pred import pred
 import numpy as np
-from pred import pred
+import tensorflow as tf
+
 file_test_instances = "test_stances_unlabeled.csv"
 file_test_bodies = "test_bodies.csv"
 
@@ -34,7 +35,10 @@ def writeCSV(headlines, bodyTexts):
 
 def predictionOnArticles(headlines, bodyTexts):
     writeCSV(headlines, bodyTexts)
-    test_pred = pred()
+    
+    test_pred = []
+    with tf.Session() as sess:
+        test_pred = pred()
 
     test_pred = np.reshape(test_pred, (-1, len(headlines)))
 
