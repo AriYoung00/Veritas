@@ -3,6 +3,9 @@ import requests
 import datetime
 import hashlib
 import shutil
+import subprocess
+import os
+import pickle
 
 import bigchain_db.upload as bigchain
 from extract_text import get_text_from_url
@@ -18,12 +21,20 @@ LAST_QUERY_DATE = datetime.datetime.min
 
 
 def neural_network(title, body):
-    shutil.rmtree("model")
-    shutil.copytree('../fakenewschallenge/model', './model')
+    if "fakenewschallenge" not in os.getcwd():
+        os.chdir("../fakenewschallenge")
 
-    ret = predictionOnArticles(title, body)
+    title_pick = pickle.dumps(title)
+    body_pick = pickle.dumps(body)
+
+    shutil.rmtree("model")
+    shutil.copytree('../Backend/model', './model')
+
+    os.chdir("../fakenewschallenge")
+
+    ret = list(subprocess.check_output(" ".join(["python", "pred_articles.py", title_pick, body_pick])))
     print(ret)
-    return ret
+    return pickle.loads(ret)
 
 
 def update_db():
