@@ -24,6 +24,7 @@
   ],
   "devDependencies": {
     "axios": "^0.18.0",
+    "react-table": "^6.9.2",
     "styled-components": "^4.2.0"
   }
 }

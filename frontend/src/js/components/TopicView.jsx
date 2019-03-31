@@ -1,8 +1,23 @@
 import React, { Component } from "react";
 import { API_ENDPOINT_ARTICLES } from './../constants/CONFIG';
 import Title from './Title';
+import Subtitle from './Subtitle';
+import Link from './Link'
+import Header from './Header';
+import styled from 'styled-components';
+import ReactTable from "react-table";
+
 const axios = require('axios');
 
+const Wrapper = styled.div`
+    text-align: left;
+    margin-left: 200px;
+    margin-top: 50px;
+    margin-bottom: 30px;
+`
+const Score = styled.div`
+    font-size: 2em;
+`
 class TopicView extends Component {
     constructor(props) {
         super(props);
@@ -12,10 +27,10 @@ class TopicView extends Component {
             articles_data: [],
         };
 
-        this.getArticles = this.getArticles.bind(this) 
-        
+        this.getArticles = this.getArticles.bind(this)
+
     }
-    componentDidMount(){
+    componentDidMount() {
         let fake_articles = this.getFakeArticles().articles;
         this.setState({
             articles_data: fake_articles,
@@ -43,6 +58,7 @@ class TopicView extends Component {
                 'topic': 'trump',
                 'date': '2019-03-30',
                 'articles': [
+                    
                     {
                         'title': 'Judge rules Trump executive order allowing offshore drilling in Arctic Ocean unlawful',
                         'url': 'https://www.cnn.com/2019/03/30/politics/trump-offshore-drilling-arctic/index.html',
@@ -59,23 +75,30 @@ class TopicView extends Component {
     }
     render() {
         console.log('articles_data', this.state.articles_data)
-        if(this.state.articles_data.length == 0){
+        if (this.state.articles_data.length == 0) {
             return (
                 <div>Loading data ...</div>
             );
         }
-        let articles_display = this.state.articles_data.map(({title, url, score}) => {
+
+        let articles_display = this.state.articles_data.map(({ title, url, score }) => {
             return (
-                <div>
-                    <a href={url}>{title}</a> 
-                    <div>{score}</div>
+                <div style={{width: '1500px'}}>
+                    <div style={{ display: 'inline-block', width: '90%'}}>
+                        <Link href={url}>{title}</Link>
+                    </div>
+                    <div style={{ float: 'right', width: '10%'}}>
+                        <Score>{score}</Score>
+                    </div>
                 </div>
             );
         });
         return (<div>
-            <Title>{this.state.topic}</Title>
-            <div>{this.state.date}</div>
-            
+            <Header />
+            <Wrapper>
+                <Title>Topic: {this.state.topic}</Title>
+                <Subtitle>Date: {this.state.date}</Subtitle>
+            </Wrapper>
             {articles_display}
         </div>);
     }
