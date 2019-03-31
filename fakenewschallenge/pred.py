@@ -43,6 +43,9 @@ clip_ratio = 5
 batch_size_train = 500
 epochs = 90
 
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
 def pred():
     # Load data sets
     raw_train = FNCData(file_train_instances, file_train_bodies)
@@ -77,7 +80,7 @@ def pred():
     l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf_vars if 'bias' not in v.name]) * l2_alpha
 
     # Define overall loss
-    loss = tf.reduce_sum(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, stances_pl) + l2_loss)
+    loss = tf.reduce_sum(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=stances_pl) + l2_loss)
 
     # Define prediction
     softmaxed_logits = tf.nn.softmax(logits)
@@ -86,20 +89,12 @@ def pred():
 
     # Load model
     if mode == 'load':
-        with tf.Session(config=tf.ConfigProto(log_device_placement=True)) as sess:
-            # Creates a graph.
-            a = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[2, 3], name='a')
-            b = tf.constant([1.0, 2.0, 3.0, 4.0, 5.0, 6.0], shape=[3, 2], name='b')
-            c = tf.matmul(a, b)
-            # Creates a session with log_device_placement set to True.
-            # Runs the op.
-            print(sess.run(c))
-            load_model(sess)
-
-
-            # Predict
-            test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
-            test_pred = sess.run(predict, feed_dict=test_feed_dict)
+        with tf.Session(config=config)) as sess:
+            with tf.device('/gpu:0'):
+                load_model(sess)
+                # Predict
+                test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
+                test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
 
     return test_pred
