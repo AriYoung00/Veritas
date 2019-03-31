@@ -19,34 +19,35 @@ import random
 import tensorflow as tf
 
 
-# Prompt for mode
-mode = 'load'
 
-
-# Set file names
-file_train_instances = "train_stances.csv"
-file_train_bodies = "train_bodies.csv"
-file_test_instances = "test_stances_unlabeled.csv"
-file_test_bodies = "test_bodies.csv"
-file_predictions = 'predictions_test.csv'
-
-
-# Initialise hyperparameters
-r = random.Random()
-lim_unigram = 5000
-target_size = 4
-hidden_size = 100
-train_keep_prob = 0.6
-l2_alpha = 0.00001
-learn_rate = 0.01
-clip_ratio = 5
-batch_size_train = 500
-epochs = 90
-
-config = tf.ConfigProto()
-config.gpu_options.allow_growth = True
 
 def pred():
+    # Prompt for mode
+    mode = 'load'
+
+
+    # Set file names
+    file_train_instances = "train_stances.csv"
+    file_train_bodies = "train_bodies.csv"
+    file_test_instances = "test_stances_unlabeled.csv"
+    file_test_bodies = "test_bodies.csv"
+    file_predictions = 'predictions_test.csv'
+
+
+    # Initialise hyperparameters
+    r = random.Random()
+    lim_unigram = 5000
+    target_size = 4
+    hidden_size = 100
+    train_keep_prob = 0.6
+    l2_alpha = 0.00001
+    learn_rate = 0.01
+    clip_ratio = 5
+    batch_size_train = 500
+    epochs = 90
+
+    config = tf.ConfigProto()
+    config.gpu_options.allow_growth = True
     # Load data sets
     raw_train = FNCData(file_train_instances, file_train_bodies)
     raw_test = FNCData(file_test_instances, file_test_bodies)
