@@ -67,8 +67,8 @@ def update_db():
                 print("Finished article", index)
                 index += 1
 
-            print(batch_headlines)
-            print(batch_bodies)
+#            print(batch_headlines)
+#            print(batch_bodies)
             scores = neural_network(batch_headlines, batch_bodies)
             for i in range(len(scores)):
                 text_hash = hashlib.sha1(batch_bodies[i].encode()).hexdigest()

@@ -89,7 +89,7 @@ def pred():
 
     # Load model
     if mode == 'load':
-        with tf.Session(config=config)) as sess:
+        with tf.Session(config=config) as sess:
             load_model(sess)
             # Predict
             test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
