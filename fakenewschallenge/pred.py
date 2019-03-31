@@ -18,7 +18,6 @@ from util import *
 import random
 import tensorflow as tf
 
-
 # Prompt for mode
 mode = 'load'
 
@@ -43,7 +42,15 @@ clip_ratio = 5
 batch_size_train = 500
 epochs = 90
 
-def pred():
+config = tf.ConfigProto()
+config.gpu_options.allow_growth = True
+
+    # Load model
+
+load_model(sess)
+
+def pred(sess):
+    
     # Load data sets
     raw_train = FNCData(file_train_instances, file_train_bodies)
     raw_test = FNCData(file_test_instances, file_test_bodies)
@@ -77,22 +84,15 @@ def pred():
     l2_loss = tf.add_n([tf.nn.l2_loss(v) for v in tf_vars if 'bias' not in v.name]) * l2_alpha
 
     # Define overall loss
-    loss = tf.reduce_sum(tf.nn.sparse_softmax_cross_entropy_with_logits(logits, stances_pl) + l2_loss)
+    loss = tf.reduce_sum(tf.nn.sparse_softmax_cross_entropy_with_logits(logits=logits, labels=stances_pl) + l2_loss)
 
     # Define prediction
     softmaxed_logits = tf.nn.softmax(logits)
     predict = tf.arg_max(softmaxed_logits, 1)
 
+    # Predict
+    test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
+    test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
-    # Load model
-    if mode == 'load':
-        with tf.Session() as sess:
-            load_model(sess)
-
-
-            # Predict
-            test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
-            test_pred = sess.run(predict, feed_dict=test_feed_dict)
-
-
-    return save_predictions(test_pred, file_predictions)
+    return test_pred
+    # return save_predictions(test_pred, file_predictions)

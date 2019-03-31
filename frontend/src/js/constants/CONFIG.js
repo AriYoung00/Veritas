@@ -1,3 +1,4 @@
-let API_ENDPOINT_ARTICLES = './getArticles'
-let API_ENDPOINT_TOPICS = './getTopics'
-
+let API_ENDPOINT_ARTICLES = 'http://35.227.156.61:5000/api/getArticles'
+let API_ENDPOINT_TOPICS = 'http://35.227.156.61:5000/api/getTopics'
+let API_ENDPOINT = 'http://35.227.156.61:5000/api';
+export {API_ENDPOINT_ARTICLES, API_ENDPOINT_TOPICS, API_ENDPOINT}

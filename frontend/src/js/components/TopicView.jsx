@@ -22,31 +22,34 @@ class TopicView extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            topic: props.topic,
-            date: props.date,
+            topic: props.location.state.topic,
+            date: props.location.state.date,
             articles_data: [],
         };
-
+        console.log(this.state.topic)
+        console.log(this.state.date)
         this.getArticles = this.getArticles.bind(this)
 
     }
     componentDidMount() {
-        let fake_articles = this.getFakeArticles().articles;
-        this.setState({
-            articles_data: fake_articles,
-        });
-        // this.getArticles()
+        // let fake_articles = this.getFakeArticles().articles;
+        // this.setState({
+        //     articles_data: fake_articles,
+        // });
+         this.getArticles()
     }
     async getArticles() {
-        axios.post(API_ENDPOINT_ARTICLES, {
-            topic: this.state.topic,
-            date: this.state.date
+        axios.get(API_ENDPOINT_ARTICLES, {
+            params: {
+                topic: this.state.topic,
+                date: this.state.date
+            }
         }).then(function (response) {
-            console.log(response);
+            console.log(response)
             return response.data;
         }).then((data) => {
             this.setState({
-                articles_data: data.articles
+                articles_data: data
             })
         }).catch(function (error) {
             console.log(error);
@@ -73,9 +76,17 @@ class TopicView extends Component {
             }
         )
     }
+
+    renderScoreColor(score) {
+        if (score > 5)
+            return '#1ebf44'
+        else 
+            return '#c12f1f'
+    }
+
     render() {
         console.log('articles_data', this.state.articles_data)
-        if (this.state.articles_data.length == 0) {
+        if (this.state.articles_data == null) {
             return (
                 <div>Loading data ...</div>
             );
@@ -83,12 +94,12 @@ class TopicView extends Component {
 
         let articles_display = this.state.articles_data.map(({ title, url, score }) => {
             return (
-                <div style={{width: '1500px'}}>
+                <div style={{width: '1500px', 'padding-left': '15em'}}>
                     <div style={{ display: 'inline-block', width: '90%'}}>
                         <StyledLink href={url}>{title}</StyledLink>
                     </div>
                     <div style={{ float: 'right', width: '10%'}}>
-                        <Score>{score}</Score>
+                        <Score style={{ color: this.renderScoreColor(score) }}>{score}</Score>
                     </div>
                 </div>
             );

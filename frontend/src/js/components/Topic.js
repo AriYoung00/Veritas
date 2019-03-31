@@ -8,19 +8,25 @@ class Topic extends React.Component {
 		super(props);
 		this.state = {
 			date: props.date,
-			topic: this.props.value,
+			topic: props.topic,
 		}
 	}
 
 	render() {
 		return (
 			<div>
-				<Link to='/topicView'>
+				<Link to={{
+					pathname: '/topicView',
+					state: {
+						date: this.state.date,
+						topic: this.state.topic
+					}
+				}}>
 					<StyledLink>
 						{this.state.topic}
 					</StyledLink>
 				</Link>
-			</div>
+			</div>	
 		);
 	}
 }
