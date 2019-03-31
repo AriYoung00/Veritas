@@ -38,7 +38,6 @@ file_test_bodies = "test_bodies.csv"
 label_ref_rev = {0: 'agree', 1: 'disagree', 2: 'discuss', 3: 'unrelated'}
 label_scores = [1, -1, 0.5, 0]
 # -*- coding: utf-8 -*-
-load_model(sess)
 
 def writeCSV(headlines, bodyTexts):
 	import csv
@@ -134,6 +133,7 @@ def pred(sess):
     predict = tf.arg_max(softmaxed_logits, 1)
 
     # Predict
+    load_model(sess)
     test_feed_dict = {features_pl: test_set, keep_prob_pl: 1.0}
     test_pred = sess.run(predict, feed_dict=test_feed_dict)
 
