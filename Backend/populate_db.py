@@ -6,13 +6,18 @@ import hashlib
 import bigchain_db.upload as bigchain
 from extract_text import get_text_from_url
 
+import sys
+sys.path.insert(0, './../fakenewschallenge/')
+from pred_articles import predictionOnArticles
+
+
 TABOOLA_URL = "https://us-central1-vision-migration.cloudfunctions.net/la_hacks_2019"
 KEEP_CATEGORIES = ["law, govt and politics", "science", "business and industrial", "technology and computing", "news"]
 LAST_QUERY_DATE = datetime.datetime.min
 
 
 def neural_network(title, body):
-    return 8.5
+    return predictionOnArticles(title, body)
 
 
 def update_db():
