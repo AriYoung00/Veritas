@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { API_ENDPOINT_ARTICLES } from './../constants/CONFIG';
 import Title from './Title';
 import Subtitle from './Subtitle';
-import Link from './Link'
+import StyledLink from './StyledLink'
 import Header from './Header';
 import styled from 'styled-components';
 import ReactTable from "react-table";
@@ -85,7 +85,7 @@ class TopicView extends Component {
             return (
                 <div style={{width: '1500px'}}>
                     <div style={{ display: 'inline-block', width: '90%'}}>
-                        <Link href={url}>{title}</Link>
+                        <StyledLink href={url}>{title}</StyledLink>
                     </div>
                     <div style={{ float: 'right', width: '10%'}}>
                         <Score>{score}</Score>
