@@ -4,8 +4,9 @@ from time import sleep
 from sys import exit
 import datetime
 
-bdb_root_url = '35.247.57.218:9984'  # Use YOUR BigchainDB Root URL here
-def upload_article(text_hash, topic, headline, news_url, score, ):
+
+bdb_root_url = '35.247.15.151:9984'  # Use YOUR BigchainDB Root URL here
+def upload_article(text_hash, topic, headline, news_url, date, score):
     user = generate_keypair()
     bdb = BigchainDB(bdb_root_url)
 
@@ -16,13 +17,14 @@ def upload_article(text_hash, topic, headline, news_url, score, ):
                 'topic': topic,
                 'headline': headline,
                 'news_url': news_url,
-                'score': score
+                'score': score,
+                'date': date.strftime("%Y-%m-%dT%H:%M:%SZ")
             },
         },
     }
 
     article_asset_metadata = {
-        'time-added': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
+        'time': datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S"),
     }
 
     prepared_creation_tx = bdb.transactions.prepare(
@@ -55,4 +57,4 @@ def get_fake_articles():
 if __name__ == "__main__":
     all_articles = get_fake_articles()
     for article in all_articles:
-        upload_article(article['hash'], article['topic'], article['headline'], article['news_url'], article['score'])
+        upload_article(article['hash'], article['topic'], article['headline'], article['news_url'], datetime.datetime.now(), article['score'])
