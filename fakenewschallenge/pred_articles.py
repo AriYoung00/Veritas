@@ -5,6 +5,8 @@ import tensorflow as tf
 from util import *
 import random
 import tensorflow as tf
+import pickle
+import sys
 
 # Prompt for mode
 mode = 'load'
@@ -64,6 +66,7 @@ def writeCSV(headlines, bodyTexts):
 
 def predictionOnArticles(headlines, bodyTexts):
     global sess
+
     writeCSV(headlines, bodyTexts)
 
     test_pred = []
@@ -143,8 +146,9 @@ def pred(sess):
 if __name__ == "__main__":
     # arr1 = ['a', 'b', 'c', 'd', 'e']
     # arr2 = ['1', '2', '3', '4', '5']
-    arr1 = ['What First Responders Don’t Know About Fiery Electric Vehicles',]
-    arr2 = ['After an out-of-control Tesla Model S plowed into a stand of palm trees on a highway median outside Fort Lauderdale last month, police rushed to put out the ensuing blaze using a department-issued fire extinguisher. It was a wasted effort. The car kept on burning after the crash, which killed the driver.The police may not have known lithium-ion batteries inside electric vehicles, once ignited, can’t be put out with chemicals from a conventional extinguisher. The battery fires are susceptible to a self-destructive chain reaction known as thermal runaway, causing a feedback loop of rising temperatures. The Tesla fire stumped a series of first responders in Florida. Firefighters eventually doused the flames with water, which seemed to work, but the wrecked car reignited twice more after being towed away. That prompted what a police report later termed “extraordinary measures,” including a call to Broward County’s hazmat unit for advice on stamping out the fire once and for all.',]
-    print(predictionOnArticles(arr1, arr2))
-    print(predictionOnArticles(arr1, arr2))
-    print(predictionOnArticles(arr1, arr2))
+    arr1 = pickle.loads(sys.argv[1])
+    arr2 = pickle.loads(sys.argv[2])
+    res = predictionOnArticles(arr1, arr2)
+    print(pickle.dumps(res))
+
+    

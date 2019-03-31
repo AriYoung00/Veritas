@@ -6,6 +6,7 @@ import StyledLink from './StyledLink'
 import Header from './Header';
 import styled from 'styled-components';
 import ReactTable from "react-table";
+import { formatDate } from '../util/formatDate';
 
 const axios = require('axios');
 
@@ -26,10 +27,7 @@ class TopicView extends Component {
             date: props.location.state.date,
             articles_data: [],
         };
-        console.log(this.state.topic)
-        console.log(this.state.date)
         this.getArticles = this.getArticles.bind(this)
-
     }
     componentDidMount() {
         // let fake_articles = this.getFakeArticles().articles;
@@ -49,8 +47,9 @@ class TopicView extends Component {
             return response.data;
         }).then((data) => {
             this.setState({
-                articles_data: data
+                articles_data: data,
             })
+            console.log(this.state.articles_data);
         }).catch(function (error) {
             console.log(error);
         });
@@ -94,7 +93,7 @@ class TopicView extends Component {
 
         let articles_display = this.state.articles_data.map(({ title, url, score }) => {
             return (
-                <div style={{width: '1500px', 'padding-left': '15em'}}>
+                <div style={{width: '1500px', 'padding-left': '15em', 'padding-bottom': '1em'}}>
                     <div style={{ display: 'inline-block', width: '90%'}}>
                         <StyledLink href={url}>{title}</StyledLink>
                     </div>
@@ -108,9 +107,11 @@ class TopicView extends Component {
             <Header />
             <Wrapper>
                 <Title>Topic: {this.state.topic}</Title>
-                <Subtitle>Date: {this.state.date}</Subtitle>
+                <Subtitle>Date: {formatDate(this.state.date)}</Subtitle>
             </Wrapper>
-            {articles_display}
+            <div style={{'padding-bottom': '5em'}}>
+                {articles_display}
+            </div>
         </div>);
     }
 }

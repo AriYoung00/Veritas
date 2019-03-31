@@ -3,6 +3,7 @@ import { Timeline }  from 'vertical-timeline-component-for-react';
 import TimeLineItem from './TimelineItem';
 import Header from './Header';
 import Title from './Title';
+
 class TimeLine extends React.Component {
 	constructor(props){
 		super(props)
@@ -12,7 +13,7 @@ class TimeLine extends React.Component {
 			dates: [],
 		}
 
-		for (let i = 0; i < 8; i++) {
+		for (let i = 0; i < 100; i++) {
 			date.setMinutes(date.getMinutes() - 30);
 			let minutes = date.getMinutes() < 30 ? '00' : '30';
 			let day = date.getDate() < 10 ? '0' + date.getDate() : date.getDate();
