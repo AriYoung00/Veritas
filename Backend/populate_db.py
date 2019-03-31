@@ -2,7 +2,6 @@ import time
 import requests
 import datetime
 import hashlib
-import os
 import shutil
 
 import bigchain_db.upload as bigchain
@@ -19,7 +18,7 @@ LAST_QUERY_DATE = datetime.datetime.min
 
 
 def neural_network(title, body):
-    os.rmdir("model")
+    shutil.rmtree("model")
     shutil.copytree('../fakenewschallenge/model', './model')
 
     ret = predictionOnArticles(title, body)
