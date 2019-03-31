@@ -35,10 +35,11 @@ def writeCSV(headlines, bodyTexts):
 
 def predictionOnArticles(headlines, bodyTexts):
     writeCSV(headlines, bodyTexts)
-    
+
     test_pred = []
     with tf.Session() as sess:
-        test_pred = pred()
+        test_pred = pred(sess)
+        sess.close()
 
     test_pred = np.reshape(test_pred, (-1, len(headlines)))
 

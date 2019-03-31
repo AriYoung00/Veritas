@@ -21,7 +21,7 @@ import tensorflow as tf
 
 
 
-def pred():
+def pred(sess):
     # Prompt for mode
     mode = 'load'
 
