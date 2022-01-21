@@ -12,7 +12,7 @@ cryptography==2.3.1
 decorator==4.4.0
 html2text==2018.1.9
 idna==2.8
-ipython==7.4.0
+ipython==7.16.3
 ipython-genutils==0.2.0
 jedi==0.13.3
 parso==0.3.4
